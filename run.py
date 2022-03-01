@@ -9,7 +9,7 @@ from tkinter.filedialog import askopenfilename
 import os
 
 def makeExcel():
-    f = open(root.filename)
+    f = open(root.filename, 'r', encoding="utf-8")
     data = json.load(f)
     result = []
     for d in data:
@@ -25,7 +25,9 @@ def makeExcel():
     print(df)
     setProgressBar(100)
     DonePopup()
-    df.to_csv('result.csv', index = False, header=True)
+    head, tail = os.path.split(root.filename)
+    filename, file_extension = os.path.splitext(tail)
+    df.to_csv(os.path.basename(filename) + "_result.csv", index = False, header=True)
     
 root = Tk()
 
@@ -73,7 +75,7 @@ my_progress.pack(side=LEFT, pady=10)
 
 def ClosePopup():
     pop.destroy()
-    # os.startfile('')
+    os.startfile('')
     root.destroy()
 def DonePopup():
     root_x = root.winfo_rootx()
